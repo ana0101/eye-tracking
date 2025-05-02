@@ -1,0 +1,17 @@
+timestamp	message
+2923.9377999911085	*** DATE_2025-04-14
+2925.1973000355065	*** EXP_START_TIMESTAMP_1744634690
+2925.990300020203	*** SESSION_ID_1
+2926.653900067322	*** PARTICIPANT_ID_008
+2927.5802000192925	*** DATASET_TYPE_pilot_sessions
+2928.335899952799	*** STIMULUS_ORDER_VERSION_238
+2929.1064999997616	START
+2931.1353999655694	start preparing stimuli screens
+44601.0179000441	finished preparing stimuli screens
+44601.699299993925	finished preparing practice screens
+44602.30000002775	start preparing other screens
+45466.49270004127	finished preparing other screens
+45949.12989996374	show welcome screen
+77443.32980003674	show informed consent screen
+83465.02360003069	start experiment
+9910243.86779999	finished experiment
