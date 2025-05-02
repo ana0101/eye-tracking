@@ -257,7 +257,6 @@ class ExtractWordFixations:
         """
         Returns a dictionary of fixations for each word in the dataset.
         """
-        # self.dataset = self.dataset.load(events=True, preprocessed=True)
         words_dict = dict()
 
         for i, event_df in enumerate(self.dataset.events):
@@ -281,11 +280,11 @@ class ExtractWordFixations:
                 if word_idx not in words_dict[stimulus_key][subject_id]:
                     words_dict[stimulus_key][subject_id][word_idx] = dict()
                     words_dict[stimulus_key][subject_id][word_idx]['word'] = row['word']
-                    words_dict[stimulus_key][subject_id][word_idx]['fixations'] = WordFixations()
+                    words_dict[stimulus_key][subject_id][word_idx]['fixations'] = WordFixations(fixations=[], TRT=0)
                 
                 # Append the fixation duration
                 words_dict[stimulus_key][subject_id][word_idx]['fixations'].fixations.append(row['duration'])
-                
+
         # Calculate the TRT for each word
         for stimulus_key in words_dict:
             for subject_id in words_dict[stimulus_key]:

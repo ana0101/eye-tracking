@@ -87,7 +87,7 @@ def create_stimuli_experiment_sentences_dict(stimuli_experiment_path):
                     stimuli_sentences_dict[dict_key] = {}
                 stimuli_sentences_dict[dict_key]['text'] = words
                 # Split the words into sentences: \n, ., ?, !
-                sentences = re.split(r'(?<=[.!?])\s+|(?<=\n)\s*', words)
+                sentences = re.split(r'(?<=[.!?:])\s+|(?<=\n)\s*|(?<=\.\”)', words)
                 # Remove empty sentences
                 sentences = [s.strip() for s in sentences if s.strip()]
                 # Add the sentences to the dictionary
@@ -116,13 +116,13 @@ def map_words_to_sentences(aoi_sentences_dict, stimuli_sentences_dict):
                 found = False
                 clean_word = word.strip('.,!?:„”()')
                 # If there is any punctuation mark in the word, put None for setence
-                if any(p in clean_word for p in ['.', '!', '?', ':', '„', '”']):
-                    word_to_sentence_mapping[key][word_idx] = {
-                        'word': clean_word,
-                        'sentence': None,
-                        'sentence_idx': None
-                    }
-                    continue
+                # if any(p in clean_word for p in ['.', '!', '?', ':', '„', '”']):
+                word_to_sentence_mapping[key][word_idx] = {
+                    'word': clean_word,
+                    'sentence': None,
+                    'sentence_idx': None
+                }
+                    # continue
                 # Search for the word in the current sentence
                 # If not found, go to the next sentence
                 while sentence_idx < len(sentences) and not found:
