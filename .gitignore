@@ -1,0 +1,4 @@
+**/.ipynb_checkpoints/
+*.csv#
+__pycache__/*
+.vscode/
