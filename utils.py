@@ -3,6 +3,7 @@ import pandas as pd
 import re
 
 from word_fixations import *
+from word_properties import *
 
 def clean_aoi_sentences_files(sentences_path, question_version):
     """
@@ -112,9 +113,10 @@ def map_words_to_sentences(aoi_sentences_dict, stimuli_sentences_dict):
             # Add key to the mapping dictionary
             word_to_sentence_mapping[key] = {}
             # Go through each word
+            prev_word_pos = 0
             for word_idx, word in words_dict.items():
                 found = False
-                clean_word = word.strip('.,!?:„”()')
+                clean_word = word
                 # If there is any punctuation mark in the word, put None for setence
                 # if any(p in clean_word for p in ['.', '!', '?', ':', '„', '”']):
                 word_to_sentence_mapping[key][word_idx] = {
@@ -127,7 +129,9 @@ def map_words_to_sentences(aoi_sentences_dict, stimuli_sentences_dict):
                 # If not found, go to the next sentence
                 while sentence_idx < len(sentences) and not found:
                     sentence = sentences[sentence_idx]
-                    if clean_word in sentence:
+                    if clean_word in sentence[prev_word_pos:]:
+                        word_pos = sentence[prev_word_pos:].index(clean_word) + prev_word_pos
+                        prev_word_pos = word_pos + len(clean_word)
                         # If the word is found, add it to the mapping
                         if key not in word_to_sentence_mapping:
                             word_to_sentence_mapping[key] = {}
@@ -140,6 +144,7 @@ def map_words_to_sentences(aoi_sentences_dict, stimuli_sentences_dict):
                     else:
                         # If the word is not found, go to the next sentence
                         sentence_idx += 1
+                        prev_word_pos = 0
                         print(f"Word '{clean_word}' not found in sentence '{sentence}'. Moving to next sentence.")
                 # If the word is not found in any sentence, add it to the mapping with None
                 if not found:
@@ -165,6 +170,10 @@ def get_word_sentence_fixations_dict_from_csv(csv_path):
         stimulus = row['stimulus']
         subject_id = row['subject_id']
         word_idx = row['word_index']
+        word_idx_in_sentence = row['word_index_in_sentence']
+        # If word_idx_in_sentence is NaN, set it to -1 (the questions)
+        if pd.isna(word_idx_in_sentence):
+            word_idx_in_sentence = -1
         word = row['word']
         sentence = row['sentence']
         fixations_list = row['fixations_list']
@@ -175,13 +184,34 @@ def get_word_sentence_fixations_dict_from_csv(csv_path):
 
         if stimulus not in words_dict:
             words_dict[stimulus] = {}
-        if subject_id not in words_dict[stimulus]:
-            words_dict[stimulus][subject_id] = {}
-        if word_idx not in words_dict[stimulus][subject_id]:
-            words_dict[stimulus][subject_id][word_idx] = {
-                'word': word,
-                'sentence': sentence,
-                'fixations': WordFixations(fixations=fixations_list, TRT=fixations_TRT)
+        if word_idx not in words_dict[stimulus]:
+            words_dict[stimulus][word_idx] = {
+                'word': str(word),
+                'sentence': str(sentence),
+                'word_idx_in_sentence': int(word_idx_in_sentence),
+                'properties': WordProperties(word=str(word), sentence=str(sentence), word_idx_in_sentence=int(word_idx_in_sentence)),
+                'subjects_fixations': {}
             }
+        if subject_id not in words_dict[stimulus][word_idx]['subjects_fixations']:
+            words_dict[stimulus][word_idx]['subjects_fixations'][subject_id] = WordFixations(fixations=fixations_list, TRT=fixations_TRT)
+
+    return words_dict
+
+
+def compute_average_TRT(words_dict):
+    """
+    Compute the average TRT (from all subjects) for each word in the words_dict.
+    """
+    for stimulus, words in words_dict.items():
+        for word_idx, word_data in words.items():
+            total_TRT = 0
+            num_subjects = len(word_data['subjects_fixations'])
+            for subject_id, fixations in word_data['subjects_fixations'].items():
+                total_TRT += fixations.TRT
+            if num_subjects > 0:
+                average_TRT = total_TRT / num_subjects
+                word_data['average_TRT'] = average_TRT
+            else:
+                word_data['average_TRT'] = 0  # No subjects, set average TRT to 0
 
     return words_dict
