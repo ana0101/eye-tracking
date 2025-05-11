@@ -3,8 +3,13 @@ from transformers import AutoTokenizer, BertModel
 from torch.utils.data import TensorDataset, DataLoader
 import joblib
 
-from word_properties import *
-from regression_model import *
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from trt_model.word_properties import *
+from trt_model.regression_model import *
 
 def get_words_dict_from_input_text(input_text):
     """
@@ -79,7 +84,7 @@ def compute_properties_for_input_words(words_dict):
     return words_dict
 
 
-def predict_TRT_for_input_words(words_dict):
+def predict_trt_for_input_words(words_dict):
     """
     This function predicts the TRT for each word in the words_dict.
     """
@@ -92,7 +97,7 @@ def predict_TRT_for_input_words(words_dict):
     X = np.column_stack((length, freq, surprisal, transformer_embedding_avg))
     
     # Scale the features
-    scaler = joblib.load('scaler.pkl')
+    scaler = joblib.load('trt_model/scaler.pkl')
     X_scaled = scaler.transform(X)
     
     # Prepare the data for the model
@@ -102,7 +107,7 @@ def predict_TRT_for_input_words(words_dict):
 
     # Load the model
     model = RegressionModel(input_dim=X.shape[1])
-    model.load_state_dict(torch.load('best_regression_model.pth'))
+    model.load_state_dict(torch.load('trt_model/best_regression_model.pth'))
 
     # Move the model to the appropriate device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -122,15 +127,13 @@ def predict_TRT_for_input_words(words_dict):
     # Add the predictions to the words_dict
     for i, word_id in enumerate(words_dict.keys()):
         words_dict[word_id]['predicted_trt'] = predictions[i]
-    return words_dict
 
-
-words_dict = get_words_dict_from_input_text("Aceasta este o propozitie de test. Ribozomii sunt organite celulare care sintetizeaza proteine.")
-
-compute_properties_for_input_words(words_dict)
-for word_id, word_info in words_dict.items():
-    print(f"Word: {word_info['word']}, Properties: {vars(word_info['properties'])}")
-
-predict_TRT_for_input_words(words_dict)
-for word_id, word_info in words_dict.items():
-    print(f"Word: {word_info['word']}, Predicted TRT: {word_info['predicted_trt']}")
+    # Return a list of dictionaries with the word, its id and its predicted TRT
+    results = []
+    for word_id, word_info in words_dict.items():
+        results.append({
+            'word': word_info['word'],
+            'word_id': word_id,	
+            'trt': round(word_info['predicted_trt'], 2) if word_info['predicted_trt'] > 0 else 0
+        })
+    return results
