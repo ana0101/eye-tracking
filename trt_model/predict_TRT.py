@@ -3,10 +3,12 @@ from transformers import AutoTokenizer, BertModel
 from torch.utils.data import TensorDataset, DataLoader
 import joblib
 
-import sys
 import os
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+SCALER_PATH = os.path.join(BASE_DIR, 'trt_model', 'scaler.pkl')
+MODEL_PATH = os.path.join(BASE_DIR, 'trt_model', 'best_regression_model.pth')
 
 from trt_model.word_properties import *
 from trt_model.regression_model import *
@@ -97,7 +99,7 @@ def predict_trt_for_input_words(words_dict):
     X = np.column_stack((length, freq, surprisal, transformer_embedding_avg))
     
     # Scale the features
-    scaler = joblib.load('trt_model/scaler.pkl')
+    scaler = joblib.load(SCALER_PATH)
     X_scaled = scaler.transform(X)
     
     # Prepare the data for the model
@@ -107,7 +109,7 @@ def predict_trt_for_input_words(words_dict):
 
     # Load the model
     model = RegressionModel(input_dim=X.shape[1])
-    model.load_state_dict(torch.load('trt_model/best_regression_model.pth'))
+    model.load_state_dict(torch.load(MODEL_PATH))
 
     # Move the model to the appropriate device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
