@@ -31,7 +31,7 @@ def clean_aoi_sentences_files(sentences_path, question_version):
             df.to_csv(file_path, index=False)
 
 
-def create_aoi_sentences_dict(sentences_path):
+def create_aoi_words_dict(sentences_path):
     """
     Creates a dictionary with keys as file names and pages, and values a dictionary with keys the word_idx and the word as value.
     """
@@ -94,6 +94,36 @@ def create_stimuli_experiment_sentences_dict(stimuli_experiment_path):
                 # Add the sentences to the dictionary
                 stimuli_sentences_dict[dict_key]['sentences'] = sentences
     return stimuli_sentences_dict
+
+
+def create_stimuli_experiment_text_dict(stimuli_experiment_path):
+    """
+    Creates a dictionary with keys as file names and pages, and values as a dictionary with keys text, which contains a string of all words on that page.
+    """
+    stimuli_text_dict = {}
+    df = pd.read_excel(stimuli_experiment_path)
+
+    # Group py stimulus_id
+    grouped = df.groupby('stimulus_id')
+
+    # Go through each group
+    for name, group in grouped:
+        stimulus_name = group['stimulus_name'].iloc[0]
+        stimulus_id = group['stimulus_id'].iloc[0]
+        # Go through all page_* columns
+        for col in group.columns:
+            if col.startswith('page_'):
+                dict_key = f"{stimulus_name.lower()}_{stimulus_id}_{col.lower()}"
+                # Get the words from the column
+                words = group[col].iloc[0]
+                # Check if the stimulus has that page
+                if pd.isna(words):
+                    continue
+                # Add to the dictionary
+                if dict_key not in stimuli_text_dict:
+                    stimuli_text_dict[dict_key] = ""
+                stimuli_text_dict[dict_key] = words
+    return stimuli_text_dict
 
 
 def map_words_to_sentences(aoi_sentences_dict, stimuli_sentences_dict):

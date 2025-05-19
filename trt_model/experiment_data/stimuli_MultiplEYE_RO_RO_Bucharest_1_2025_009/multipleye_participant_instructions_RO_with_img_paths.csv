@@ -1,0 +1,61 @@
+Unnamed: 0,instruction_screen_id,instruction_screen_name,instruction_screen_text,comment,instruction_screen_img_name,instruction_screen_img_path
+0,1,welcome_screen,"Bine ați venit la studiul MultiplEYE
+
+
+
+
+Când sunteți gata, vă rugăm să apăsați bara de spațiu pentru a trece la instrucțiuni.",acesta este ecranul pe care participanții îl vor vedea la intrarea în laborator,welcome_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/welcome_screen_RO.png
+1,2,empty_screen,,Las acest lucru aici doar de dragul transparenței.,empty_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/empty_screen_RO.png
+2,3,fixation_screen,,"punct de fixare în colțul din stânga sus, fără text",fixation_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/fixation_screen_RO.png
+3,4,obligatory_break_screen,"Acum ar trebui să luați o pauză de 5 minute. Nu ezitați să vă ridicați, să vă mișcați capul, să vă relaxați ochii și să luați niște apă.",prezentat înainte de pauza obligatorie,obligatory_break_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/obligatory_break_screen_RO.png
+4,5,optional_break_screen,"Dacă doriți, puteți lua acum o pauză pentru a vă odihni sau pentru a bea niște apă. Sau puteți continua lectura apăsând bara de spațiu.",Acest ecran poate fi afișat atunci când există o opțiune pentru o pauză,optional_break_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/optional_break_screen_RO.png
+5,6,final_screen,Vă mulțumim! Ați terminat partea de citire!,,final_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/final_screen_RO.png
+6,7,practice_screen,"Acum, vom începe cu două texte de exersare, astfel încât să vă puteți face o idee despre procedura experimentului. Dacă ceva nu este clar sau dacă aveți întrebări, vă rugăm să vorbiți cu experimentatorul.
+
+Vă rugăm să vă uitați la punctul negru din colțul din dreapta jos al ecranului și să apăsați bara de spațiu pentru a începe cu textele de exersare.",Chiar înainte de stimuli de practică,practice_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/practice_screen_RO.png
+7,8,transition_screen,"Ați completat textele de exersare. Urmează să începem experimentul. Vă rugăm să încercați să vă mișcați cât mai puțin posibil în timp ce citiți textele. Este posibil să fie nevoie să recalibrăm dispozitivul de urmărire a ochilor dacă vă mișcați prea mult. Dacă aveți nevoie de o pauză în timpul experimentului, vă rugăm să informați experimentatorul.
+
+Vă rugăm să vă uitați la punctul din colțul din dreapta jos al ecranului și apoi să apăsați bara de spațiu pentru a începe.","După stimuli de practică, înainte de primul stimul",transition_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/transition_screen_RO.png
+8,9,informed_consent_screen,"Înainte de a începe experimentul, vă solicităm să completați un formular de consimțământ scris. În acesta, vom explica procedura experimentală, precum și utilizarea și protecția datelor dumneavoastră.
+
+Experimentatorul vă va furniza acest formular acum.
+
+După ce ați semnat formularul, vă rugăm să vă uitați la punctul negru din colțul din dreapta jos al ecranului și să apăsați bara de spațiu pentru a continua.",Afișat imediat după ecranul de întâmpinare. Participanții trebuie să semneze consimțământul informat.,informed_consent_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/informed_consent_screen_RO.png
+9,10,instruction_screen_2,"Fiecare text va fi afișat pe mai multe ecrane. Înainte de fiecare ecran de text nou, veți vedea un punct negru cu un centru alb în colțul din stânga sus al ecranului. Trebuie să vă concentrați ochii pe centrul alb al punctului pentru a trece la următorul ecran. Vom folosi acest lucru pentru a verifica acuratețea urmăririi ochilor. Experimentatorul vă va sfătui dacă acest lucru este necesar, dacă nu, veți trece automat la următorul ecran.
+
+Când ați terminat de citit fiecare ecran, vă rugăm să urmați aceeași procedură pentru a trece mai departe. Uitați-vă la **punctul negru** afișat în colțul din dreapta jos al ecranului. În timp ce vă uitați la punct, apăsați **bara de spațiu** pentru a trece la ecranul următor. **Vă rugăm să rețineți că nu vă veți putea întoarce la un ecran pe care l-ați citit deja.**
+
+Urmați procedura de mai sus pentru a continua la ecranul următor.",,instruction_screen_2_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/instruction_screen_2_RO.png
+10,11,instruction_screen_3,"După fiecare text, vă vor fi prezentate mai multe întrebări de înțelegere a textului. Fiecare întrebare va fi prezentată pe un ecran separat, împreună cu patru opțiuni de răspuns. **Există un singur răspuns corect.** Vă rugăm să selectați opțiunea de răspuns corectă utilizând tastele săgeată de pe tastatură. Răspunsul selectat va fi evidențiat. După ce sunteți mulțumit de răspunsul dumneavoastră, apăsați bara de spațiu pentru a confirma selecția.",,instruction_screen_3_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/instruction_screen_3_RO.png
+11,12,instruction_screen_1,"Veți citi mai multe tipuri diferite de texte și veți răspunde la întrebări de înțelegere legate de acestea. Textele sunt diverse în ceea ce privește conținutul și aspectul. Unele sunt mai lungi, iar altele mai scurte. Vă rugăm să vă așteptați la unele cuvinte neobișnuite și la diferite stiluri și complexități de text. Este posibil să vă fie greu să interpretați unele aspecte ale textelor, acest lucru este firesc. Întrebările sunt, de asemenea, diverse. Unele sunt mai complexe, iar altele sunt mai ușoare.
+
+Citiți fiecare text în mod natural, așa cum ați citi în mod obișnuit. Vă rugăm să citiți în liniște.
+
+Pentru a continua, vă rugăm să vă uitați la punctul negru din colțul din dreapta jos al ecranului și să apăsați bara de spațiu.",,instruction_screen_1_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/instruction_screen_1_RO.png
+12,15,subject_difficulty_screen,"Vă rugăm să evaluați gradul de dificultate al textului pe care tocmai l-ați citit. Cât de greu v-a fost să citiți și să înțelegeți textul?
+
+1 - foarte ușor
+2 - ușor
+3 - nici ușor, nici dificil
+4 - dificil
+5 - foarte dificil",prezentate după citirea textului,subject_difficulty_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/subject_difficulty_screen_RO.png
+13,16,familiarity_rating_screen_1,"Ați mai citit sau ascultat acest text?
+
+
+- Da
+- Nu
+- Nu-mi amintesc",prezentate după citirea textului,familiarity_rating_screen_1_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/familiarity_rating_screen_1_RO.png
+14,17,familiarity_rating_screen_2,"Vă rugăm să vă evaluați gradul de familiaritate cu conținutul textului. Cât de mult din acesta vă era cunoscut?
+
+1 - 0%
+2 - 25%
+3 - 50%
+4 - 75%
+5 - 100%",prezentate după citirea textului,familiarity_rating_screen_2_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/familiarity_rating_screen_2_RO.png
+15,18,camera_setup_screen,"Vă rugăm să solicitați experimentatorului să **regleze camera,** să seteze **frecvența de eșantionare** corectă și să calibreze.
+
+Apăsați bara de spațiu pentru a merge la ecranul de configurare a camerei.
+
+Apropiați-vă degetul de **ochiul dominant.** Experimentatorul va verifica dacă ochiul corect este urmărit.","prezentate înainte de montarea camerei, după instrucțiunile",camera_setup_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/camera_setup_screen_RO.png
+16,19,validation_screen,"Acum, vom valida calibrarea camerei și, dacă este necesar, o vom recalibra. Apăsați bara de spațiu pentru a merge la ecranul de calibrare.",Înainte de fiecare dintre validările efectuate între încercări.,validation_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/validation_screen_RO.png
+17,20,recalibration_screen,"Acum, vom recalibra. Apăsați bara de spațiu pentru a merge la ecranul de calibrare.",prezentat înaintea unui proces în cazul în care procesul său anterior are mai mult de un declanșator care nu se declanșează.,recalibration_screen_RO.png,data/stimuli_MultiplEYE_RO_RO_Bucharest_1_2025/participant_instructions_images_RO_RO_1/recalibration_screen_RO.png

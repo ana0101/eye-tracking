@@ -1,0 +1,386 @@
+{
+    "question_01111_stimulus_1": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_01112_stimulus_1": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_01121_stimulus_1": {
+        "target": "right",
+        "distractor_a": "left",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_01122_stimulus_1": {
+        "target": "up",
+        "distractor_a": "left",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_01131_stimulus_1": {
+        "target": "right",
+        "distractor_a": "down",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_01132_stimulus_1": {
+        "target": "down",
+        "distractor_a": "left",
+        "distractor_b": "right",
+        "distractor_c": "up"
+    },
+    "question_02111_stimulus_2": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_02112_stimulus_2": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_02121_stimulus_2": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_02122_stimulus_2": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_02131_stimulus_2": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "left"
+    },
+    "question_02132_stimulus_2": {
+        "target": "right",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "left"
+    },
+    "question_03111_stimulus_3": {
+        "target": "left",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_03112_stimulus_3": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "down"
+    },
+    "question_03121_stimulus_3": {
+        "target": "down",
+        "distractor_a": "left",
+        "distractor_b": "up",
+        "distractor_c": "right"
+    },
+    "question_03122_stimulus_3": {
+        "target": "right",
+        "distractor_a": "down",
+        "distractor_b": "up",
+        "distractor_c": "left"
+    },
+    "question_03131_stimulus_3": {
+        "target": "left",
+        "distractor_a": "down",
+        "distractor_b": "right",
+        "distractor_c": "up"
+    },
+    "question_03132_stimulus_3": {
+        "target": "left",
+        "distractor_a": "down",
+        "distractor_b": "right",
+        "distractor_c": "up"
+    },
+    "question_04111_stimulus_4": {
+        "target": "down",
+        "distractor_a": "left",
+        "distractor_b": "right",
+        "distractor_c": "up"
+    },
+    "question_04112_stimulus_4": {
+        "target": "down",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "left"
+    },
+    "question_04121_stimulus_4": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "left"
+    },
+    "question_04122_stimulus_4": {
+        "target": "down",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_04131_stimulus_4": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_04132_stimulus_4": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_06111_stimulus_6": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "down"
+    },
+    "question_06121_stimulus_6": {
+        "target": "down",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_06131_stimulus_6": {
+        "target": "up",
+        "distractor_a": "left",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_06112_stimulus_6": {
+        "target": "right",
+        "distractor_a": "left",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_06122_stimulus_6": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_06132_stimulus_6": {
+        "target": "down",
+        "distractor_a": "left",
+        "distractor_b": "up",
+        "distractor_c": "right"
+    },
+    "question_07111_stimulus_7": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_07131_stimulus_7": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_08111_stimulus_8": {
+        "target": "up",
+        "distractor_a": "left",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_08112_stimulus_8": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_08121_stimulus_8": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_08122_stimulus_8": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_08131_stimulus_8": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_08132_stimulus_8": {
+        "target": "down",
+        "distractor_a": "up",
+        "distractor_b": "right",
+        "distractor_c": "left"
+    },
+    "question_09111_stimulus_9": {
+        "target": "up",
+        "distractor_a": "left",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_09112_stimulus_9": {
+        "target": "up",
+        "distractor_a": "left",
+        "distractor_b": "right",
+        "distractor_c": "down"
+    },
+    "question_09121_stimulus_9": {
+        "target": "down",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_09122_stimulus_9": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_09131_stimulus_9": {
+        "target": "left",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_09132_stimulus_9": {
+        "target": "down",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_10111_stimulus_10": {
+        "target": "down",
+        "distractor_a": "left",
+        "distractor_b": "right",
+        "distractor_c": "up"
+    },
+    "question_10121_stimulus_10": {
+        "target": "left",
+        "distractor_a": "up",
+        "distractor_b": "right",
+        "distractor_c": "down"
+    },
+    "question_10131_stimulus_10": {
+        "target": "right",
+        "distractor_a": "left",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_10212_stimulus_10": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_10222_stimulus_10": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_10232_stimulus_10": {
+        "target": "right",
+        "distractor_a": "left",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_11111_stimulus_11": {
+        "target": "left",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_11121_stimulus_11": {
+        "target": "left",
+        "distractor_a": "down",
+        "distractor_b": "up",
+        "distractor_c": "right"
+    },
+    "question_11131_stimulus_11": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_11212_stimulus_11": {
+        "target": "left",
+        "distractor_a": "down",
+        "distractor_b": "up",
+        "distractor_c": "right"
+    },
+    "question_11222_stimulus_11": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "down"
+    },
+    "question_11232_stimulus_11": {
+        "target": "left",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "right"
+    },
+    "question_12111_stimulus_12": {
+        "target": "right",
+        "distractor_a": "up",
+        "distractor_b": "down",
+        "distractor_c": "left"
+    },
+    "question_12112_stimulus_12": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_12121_stimulus_12": {
+        "target": "right",
+        "distractor_a": "down",
+        "distractor_b": "left",
+        "distractor_c": "up"
+    },
+    "question_12122_stimulus_12": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "down",
+        "distractor_c": "up"
+    },
+    "question_12131_stimulus_12": {
+        "target": "left",
+        "distractor_a": "right",
+        "distractor_b": "up",
+        "distractor_c": "down"
+    },
+    "question_12132_stimulus_12": {
+        "target": "up",
+        "distractor_a": "down",
+        "distractor_b": "left",
+        "distractor_c": "right"
+    },
+    "question_13121_stimulus_13": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "down"
+    },
+    "question_13131_stimulus_13": {
+        "target": "up",
+        "distractor_a": "right",
+        "distractor_b": "left",
+        "distractor_c": "down"
+    }
+}
