@@ -2,3 +2,14 @@
 *.csv#
 **/__pycache__/*
 .vscode/
+*.aux
+*.bbl
+*bbl-SAVE-ERROR
+*.bcf
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
