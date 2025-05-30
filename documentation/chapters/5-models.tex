@@ -1,0 +1,158 @@
+\chapter{Models}
+After extracting the features, I trained several models to predict the total reading time for each word.
+
+\section{Metrics}
+In order to evaluate the performance of the models, I used the following metrics:
+\begin{enumerate}
+    \item \textbf{Mean Squared Error (MSE)}: This metric measures the average of the squares of the errors, which is the average squared difference between the predicted and actual values. It is calculated as:
+    \begin{equation}
+        \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+    \end{equation}
+    where \( n \) is the number of samples, \( y_i \) is the actual value, and \( \hat{y}_i \) is the predicted value. A lower MSE indicates better model performance. The MSE is sensitive to outliers, as it squares the errors, which means that larger errors have a disproportionately large impact on the MSE.
+
+    \item \textbf{R2 Score (Coefficient of Determination)}: This metric measures the proportion of the variance in the dependent variable that is predictable from the independent variables. It is calculated as:
+    \begin{equation}
+        R^2 = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+    \end{equation}
+    where \( \bar{y} \) is the mean of the actual values. The R2 score ranges from 0 to 1, where 1 indicates that the model perfectly predicts the dependent variable, and 0 indicates that the model does not explain any of the variance in the dependent variable. A negative R2 score indicates that the model is worse than simply predicting the mean of the dependent variable.
+
+    \item \textbf{Pearson Correlation Coefficient (r)}: This metric measures the linear correlation between the predicted and actual values. It is calculated as:
+    \begin{equation}
+        r = \frac{\text{cov}(y, \hat{y})}{\sigma_y \sigma_{\hat{y}}}
+    \end{equation}
+    where \( \text{cov}(y, \hat{y}) \) is the covariance between the actual and predicted values, and \( \sigma_y \) and \( \sigma_{\hat{y}} \) are the standard deviations of the actual and predicted values, respectively. The Pearson correlation coefficient ranges from -1 to 1, where 1 indicates a perfect positive linear correlation, -1 indicates a perfect negative linear correlation, and 0 indicates no linear correlation. A higher absolute value of the Pearson correlation coefficient indicates a stronger linear relationship between the predicted and actual values.
+
+    \item \textbf{Spearman Rank Correlation Coefficient ($\rho$):} This metric measures the strength and direction of the monotonic relationship between the predicted and actual values. It is calculated as the Pearson correlation coefficient of the ranked values. The Spearman rank correlation coefficient ranges from $-1$ to $1$, where $1$ indicates a perfect positive monotonic relationship, $-1$ indicates a perfect negative monotonic relationship, and $0$ indicates no monotonic relationship. It is less sensitive to outliers than the Pearson correlation coefficient.
+    
+    \item \textbf{Accuracy}: This metric provides an intuitive interpretation of model performance by directly reflecting the average deviation from the true values on a 0–100 scale and it is taken from the \textit{Multilingual Language Models Predict Human Reading Behavior} \cite{hollenstein-etal-2021-multilingual} paper. It is defined as:
+    \begin{equation}
+        \text{Accuracy} = 100 - \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+    \end{equation}
+    where \( n \) is the number of samples, \( y_i \) is the actual value, and \( \hat{y}_i \) is the predicted value. This is equivalent to subtracting the Mean Absolute Error (MAE) from 100. Since the target values (reading times) are scaled to lie within the range \([0, 100]\), this metric provides a straightforward percentage-based measure of predictive accuracy, where higher values indicate better performance.
+\end{enumerate}
+
+
+\section{Simple Models}
+
+\subsection{Data Preparation}
+First, I prepared the data for training the models. I used the features described in the previous chapter and the total reading time for each word as the target. I split the data into train and test sets, with 80\% of the data used for training and 20\% for testing, which means 3796 words for training and 949 words for testing. I also standardized the features using the StandardScaler from scikit-learn, which scales the features to have zero mean and unit variance, then I also standardized the total reading time.
+
+\subsection{Models and Results}
+The first models I tried were rather simple ones. I used the scikit-learn library to implement all the models except for the custom neural network, which I implemented using PyTorch.
+I trained the models first on the non-embedding features, then on the embeddings, and finally on both the non-embedding features and the embeddings together. The non-embedding features are the length of the word, the number of tokens, the frequency, and the surprisal. The embeddings are the contextual embeddings obtained from the BERT model. The results of the models are shown in Tables \ref{tab:simple_models_results_no_embeddings}, \ref{tab:simple_models_results_embeddings}, and \ref{tab:simple_models_results_all}. All metrics are computed on the standardized reading times except the accuracy, which is calculated on the reading times in the \([0, 100]\) interval. I tried various hyperparameters for each model and selected the best ones based on the test set performance. The hyperparameters for each model are available in the annex.
+
+\begin{table}[ht]
+    \centering
+    \caption{Results of simple models trained on different feature sets.}
+    \label{tab:simple_models_results}
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|l|c|c|c|c|c|}
+            \hline
+            Model & MSE & R2 & Pearson & Spearman & Accuracy \\
+            \hline
+            Linear Regression & 0.60 & 0.36 & 0.60 & 0.67 & 93.25 \\
+            Elastic Net & 0.60 & 0.36 & 0.60 & 0.67 & 93.22 \\
+            SGD Regressor & 0.60 & 0.36 & 0.60 & 0.67 & 93.26 \\
+            Bayesian Ridge & 0.60 & 0.36 & 0.60 & 0.67 & 93.24 \\
+            SVR Linear Kernel & 0.64 & 0.32 & 0.60 & 0.67 & 92.96 \\
+            SVR RBF Kernel & 0.64 & 0.32 & 0.60 & 0.67 & 87.66 \\
+            K Neighbors Regressor & 0.70 & 0.26 & 0.54 & 0.62 & 88.67 \\
+            Random Forest Regressor & 0.66 & 0.30 & 0.58 & 0.63 & 92.23 \\
+            Gradient Boosting Regressor & 0.57 & 0.40 & 0.63 & 0.69 & 92.64 \\
+            Hist Gradient Boosting Regressor & 0.59 & 0.38 & 0.62 & 0.68 & 87.81 \\
+            Kernel Ridge Linear Kernel & 0.60 & 0.36 & 0.60 & 0.67 & 93.25 \\
+            Kernel Ridge RBF Kernel & 0.60 & 0.37 & 0.61 & 0.67 & 86.55 \\
+            MLP Regressor & 0.60 & 0.36 & 0.61 & 0.67 & 93.58 \\
+            Custom Neural Network & 0.60 & 0.37 & 0.61 & 0.68 & 93.14 \\
+            \hline
+        \end{tabular}
+        \caption{Non-embedding features.}
+        \label{tab:simple_models_results_no_embeddings}
+    \end{subtable}    
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|l|c|c|c|c|c|}
+            \hline
+            Model & MSE & R2 & Pearson & Spearman & Accuracy \\
+            \hline
+            Linear Regression & 0.66 & 0.31 & 0.59 & 0.63 & 74.11 \\
+            Elastic Net & 0.68 & 0.28 & 0.54 & 0.63 & 67.11 \\
+            SGD Regressor & 0.73 & 0.23 & 0.57 & 0.61 & 72.69 \\
+            Bayesian Ridge & 0.59 & 0.38 & 0.62 & 0.68 & 75.24 \\
+            SVR Linear Kernel & 0.66 & 0.30 & 0.57 & 0.64 & 70.27 \\
+            SVR RBF Kernel & 0.58 & 0.38 & 0.63 & 0.69 & 73.95 \\
+            K Neighbors Regressor & 0.87 & 0.08 & 0.53 & 0.62 & 87.40 \\
+            Random Forest Regressor & 0.68 & 0.28 & 0.53 & 0.61 & 75.66 \\
+            Gradient Boosting Regressor & 0.71 & 0.25 & 0.53 & 0.62 & 74.58 \\
+            Hist Gradient Boosting Regressor & 0.63 & 0.33 & 0.58 & 0.65 & 73.99 \\
+            Kernel Ridge Linear Kernel & 0.66 & 0.31 & 0.59 & 0.63 & 74.13 \\
+            Kernel Ridge RBF Kernel & 0.55 & 0.42 & 0.65 & 0.69 & 78.21 \\
+            MLP Regressor & 0.72 & 0.24 & 0.56 & 0.59 & 86.29 \\
+            Custom Neural Network & 0.52 & 0.39 & 0.62 & 0.66 & 0.82 \\
+            \hline
+        \end{tabular}
+        \caption{Embedding features.}
+        \label{tab:simple_models_results_embeddings}
+    \end{subtable}    
+
+    \begin{subtable}[t]{\textwidth}
+        \centering
+        \begin{tabular}{|l|c|c|c|c|c|}
+            \hline
+            Model & MSE & R2 & Pearson & Spearman & Accuracy \\
+            \hline
+            Linear Regression & 0.63 & 0.33 & 0.61 & 0.64 & 88.02 \\
+            Elastic Net & 0.57 & 0.39 & 0.63 & 0.69 & 92.99 \\
+            SGD Regressor & 0.68 & 0.29 & 0.58 & 0.60 & 85.97 \\
+            Bayesian Ridge & 0.55 & 0.41 & 0.65 & 0.69 & 85.96 \\
+            SVR (RBF Kernel) & 0.56 & 0.40 & 0.65 & 0.69 & 82.31 \\
+            K Neighbors Regressor & 0.70 & 0.26 & 0.56 & 0.62 & 89.48 \\
+            Random Forest Regressor & 0.56 & 0.41 & 0.64 & 0.69 & 91.36 \\
+            Gradient Boosting Regressor & 0.58 & 0.39 & 0.63 & 0.69 & 92.98 \\
+            Hist Gradient Boosting Regressor & 0.53 & 0.44 & 0.67 & 0.70 & 83.79 \\
+            Kernel Ridge (Linear) & 0.63 & 0.33 & 0.61 & 0.64 & 88.01 \\
+            Kernel Ridge (RBF) & 0.53 & 0.44 & 0.66 & 0.70 & 87.20 \\
+            MLP Regressor & 0.74 & 0.22 & 0.56 & 0.60 & 87.81 \\
+            Custom Neural Network & 0.50 & 0.43 & 0.66 & 0.67 & 87.93 \\
+            \hline
+        \end{tabular}
+        \caption{All features.}
+        \label{tab:simple_models_results_all}
+    \end{subtable}    
+\end{table}
+
+
+\section{BERT fine-tuning}
+I also fine-tuned a BERT model for the task of predicting the total reading time for each word.
+
+\subsection{Data Preparation}
+The first step was to prepare the data for fine-tuning the BERT model. Since BERT works with tokenized input, in order to use the context, I organized the data by sentences. I created a dictionary where the keys are the sentence ids and the values are the sentence text, the list of words in the sentence, and the total reading time for each word in the sentence, which I used to create a dataframe. I then split the data into train, validation, and test sets, with 80\% of the data used for training, 10\% for validation, and 10\% for testing, and standardized the total reading time. The train set contains 250 sentences, while the validation and test sets contain 25 sentences each. The sentences were selected randomly.
+
+Based on the dataframe, I created a dataset class built on the PyTorch Dataset class. The dataset class takes as input the dataframe, the tokenizer, and a maximum sequence length. It tokenizez the words in the sentences and creates the input tensors for the BERT model. The input tensors include the input ids, which are the tokenized words, the attention masks, which indicate which tokens are padding and which are not, and the targets, which are the total reading time for each word in the sentence. Because some words are split into multiple tokens, I used the word's reading time as the target for all tokens of the word.
+
+\subsection{Model Architecture}
+The first model I tried was BertForTokenClassification, using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model, which I modified for a regression task. BertForTokenClassification is a BERT model with a linear layer on top that outputs the probabilities for each class. In this case, I used the logits from the output, which are the raw scores for each token before being passed through a softmax function, and set the number of output classes to 1, since I want to predict a single value (the total reading time) for each token. The model is trained using the mean squared error loss function.
+
+The second model I tried was a normal BERT model, also using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model. On top of the BERT model, I added a regression head, which contains a linear layer, followed by ReLU activation and dropout, then another linear layer that outputs a single value (the total reading time). The model is trained using the mean squared error loss function.
+
+\subsection{Training}
+
+\subsection{Results}
+The results of the BERT fine-tuning models are shown in Table \ref{tab:bert_finetuning_results}.
+
+\begin{table}
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        Model & MSE & R2 & Pearson & Spearman & Accuracy \\
+        \hline
+        BertForTokenClassification & 1.09 & 0.40 & 0.65 & 0.68 & 85.10 \\
+        BERT with Regression Head & 1.12 & 0.39 & 0.65 & 0.68 & 83.30 \\
+        \hline
+    \end{tabular}
+    \caption{Results of BERT fine-tuning models.}
+    \label{tab:bert_finetuning_results}
+\end{table}

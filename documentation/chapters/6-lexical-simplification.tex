@@ -1,0 +1,33 @@
+\chapter{Lexical Simplification}
+
+Lexical simplification refers to the process of simplifying texts by replacing complex words with simpler alternatives. This is useful in making texts more accessible to a wider audience, including those with reading difficulties or non-native speakers. 
+
+Usually, the complexity of words is the metric used to determine which words to simplify. It can be measured in various ways, such as by the length of the word, its frequency of use, or its familiarity to the reader. It can also be estimated by predicting the complexity based on an annotated corpus. 
+
+Another approach to identify which words to replace is to look at the total reading time of words in a text. The more time it takes to read a word, the more complex it is likely to be. Simplifying these words can lower tha overall reading time of the text, making it easier to read and understand.
+
+\section{Lexical Simplification Pipeline}
+In my project, I implemented a lexical simplification pipeline that includes the following steps:
+\begin{enumerate}
+    \item Computing the total reading time of each word in a text.
+    \item Identifying the words that take the longest to read.
+    \item Generating a list of alternatives for these complex words.
+    \item Computing the reading time of the alternatives and selecting the best ones.
+    \item Replacing the complex words with the selected alternatives in the text.
+\end{enumerate}
+
+
+\section{Replacement Generation}
+To generate candidate replacements for complex words, I used the masked language model \textit{dumitrescustefan/bert-base-romanian-cased-v1}. I implemented three methods for generating alternatives, each leveraging a slightly different context strategy:
+
+\begin{enumerate}
+    \item \textbf{Basic Masking in the Sentence:} The complex word is replaced with a \texttt{[MASK]} token in the original sentence, and the model predicts suitable replacements based on this context.
+    \item \textbf{Sentence Pair with Masked Sentence First:} The masked sentence is concatenated with the original sentence using a \texttt{[SEP]} token, allowing the model to consider both contexts, inspired by the LSBert framework for lexical simplification \cite{Simplification_LSBert}:
+        \begin{quote}
+            \texttt{[MASKED\_SENTENCE] [SEP] [ORIGINAL\_SENTENCE]}
+        \end{quote}
+    \item \textbf{Sentence Pair with Original Sentence First:} The original sentence is placed before the masked sentence, exploring whether this order affects the model's predictions:
+        \begin{quote}
+            \texttt{[ORIGINAL\_SENTENCE] [SEP] [MASKED\_SENTENCE]}
+        \end{quote}
+\end{enumerate}

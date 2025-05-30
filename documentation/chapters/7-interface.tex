@@ -1,0 +1,32 @@
+\chapter{Interface}
+
+\section{Overview}
+To support users in identifying and simplifying complex words in a text, I developed a web-based tool called \textit{Reading Time Estimator}. This tool enables users to visualize word-level reading difficulty (using TRT, or Total Reading Time) and interactively replace complex words with simpler alternatives. The system combines machine learning models on the backend with a responsive, interactive frontend.
+
+The system architecture consists of a browser-based frontend communicating with a Flask backend that routes requests to two main components: the TRT predictor and the simplifier module. 
+
+\section{Backend}
+The backend of the application is implemented in Python using the Flask framework. Flask was chosen for its lightweight architecture and flexibility, making it ideal for integrating machine learning services in web environments.
+
+The backend is responsible for the following tasks:
+\begin{itemize}
+    \item \textbf{Reading Time Estimation:} Upon receiving a user input, the text is passed to the \texttt{estimate\_trt()} function, which uses a trained regression model to estimate reading times.
+    
+    \item \textbf{Word Simplification:} When a user clicks on a word, a POST request is sent to the \texttt{/simplify} route. The \texttt{simplify\_word()} function retrieves top-$k$ replacement candidates using contextual language models and re-evaluates their reading time. The replacement with the lowest TRT (and lower than the original) is selected.
+    
+    \item \textbf{API Communication:} All dynamic interactions between frontend and backend use JSON for data exchange. This enables asynchronous updates (via JavaScript fetch) without requiring full page reloads.
+\end{itemize}
+
+Additionally, the backend is modular: machine learning logic is separated into \texttt{trt\_model} and \texttt{simplifier} modules, making it extensible and easy to maintain.
+
+\section{Frontend}
+The frontend is implemented using HTML, CSS, and JavaScript, with dynamic content rendered via Jinja2 templates.
+
+Major features include:
+\begin{itemize}
+    \item \textbf{Interactive Heatmap:} After the user submits text, each word is displayed in a color-coded heatmap. Colors range from green (easy) to red (hard), based on normalized TRT values. This is computed in JavaScript using HSL color interpolation.
+
+    \item \textbf{Word Simplification Interface:} Users can click on individual words to request simpler alternatives. This triggers an AJAX request to the \texttt{/simplify} route. The replacement word is rendered inline, with updated color and tooltip.
+    
+    \item \textbf{Responsive Design:} The interface is mobile-friendly and uses simple, accessible styles for clarity and usability.
+\end{itemize}
