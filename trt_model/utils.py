@@ -251,3 +251,132 @@ def compute_average_TRT(words_dict):
                 word_data['average_TRT'] = 0  # No subjects, set average TRT to 0
 
     return words_dict
+
+
+def save_properties_to_csv(words_dict, csv_path):
+    """
+    Save the properties for each word in the words_dict to a CSV file.
+    """
+    data = []
+    for stimulus, words in words_dict.items():
+        for word_idx, word_data in words.items():
+            if 'surprisal' in word_data['properties'].__dict__:
+                surprisal = word_data['properties'].surprisal
+            else:
+                surprisal = None
+            if 'num_tokens' in word_data['properties'].__dict__:
+                num_tokens = word_data['properties'].num_tokens
+            else:
+                num_tokens = None
+            data.append({
+                'stimulus': stimulus,
+                'word_index': word_idx,
+                'word_index_in_sentence': word_data['word_idx_in_sentence'],
+                'word': word_data['word'],
+                'sentence': word_data['sentence'],
+                'surprisal': surprisal,
+                'num_tokens': num_tokens
+            })
+    
+    df = pd.DataFrame(data)
+    df.to_csv(csv_path, index=False)
+
+
+def merge_words_dicts(words_dict_list):
+    """
+    Merges a list of words dictionaries into a single dictionary.
+    Only for the words in the first dictionary.
+    """
+    merged_dict = words_dict_list[0].copy()
+    for stimulus_key in merged_dict:
+        for word_idx in merged_dict[stimulus_key]:
+            for words_dict in words_dict_list[1:]:
+                # Check if the stimulus_key exists in the current words_dict
+                if stimulus_key in words_dict and word_idx in words_dict[stimulus_key]:
+                    # Check if it's the same word
+                    if merged_dict[stimulus_key][word_idx]['word'] == words_dict[stimulus_key][word_idx]['word']:
+                        # Merge subjects_fixations
+                        for subject_id in words_dict[stimulus_key][word_idx]['subjects_fixations']:
+                            if subject_id not in merged_dict[stimulus_key][word_idx]['subjects_fixations']:
+                                merged_dict[stimulus_key][word_idx]['subjects_fixations'][subject_id] = words_dict[stimulus_key][word_idx]['subjects_fixations'][subject_id]
+                            else:
+                                # If the subject already exists, we can choose to average the TRT or keep the first one
+                                merged_dict[stimulus_key][word_idx]['subjects_fixations'][subject_id].TRT = (merged_dict[stimulus_key][word_idx]['subjects_fixations'][subject_id].TRT + words_dict[stimulus_key][word_idx]['subjects_fixations'][subject_id].TRT) / 2
+                    else:
+                        print(f"Warning: Word mismatch for {stimulus_key} at index {word_idx}. Skipping merge.")
+
+    # Recalculate average TRT after merging
+    for stimulus_key in merged_dict:
+        for word_idx in merged_dict[stimulus_key]:
+            total_TRT = 0
+            num_subjects = len(merged_dict[stimulus_key][word_idx]['subjects_fixations'])
+            for subject_id, fixations in merged_dict[stimulus_key][word_idx]['subjects_fixations'].items():
+                total_TRT += fixations.TRT
+            if num_subjects > 0:
+                average_TRT = total_TRT / num_subjects
+                merged_dict[stimulus_key][word_idx]['average_TRT'] = average_TRT
+            else:
+                merged_dict[stimulus_key][word_idx]['average_TRT'] = 0
+
+    return merged_dict
+
+
+def save_merged_dict_to_csv(words_dict, csv_path):
+    """
+    Save the merged words dictionary to a CSV file.
+    """
+    data = []
+    for stimulus, words in words_dict.items():
+        for word_idx, word_data in words.items():
+            data.append({
+                'stimulus': stimulus,
+                'word_index': word_idx,
+                'word_index_in_sentence': word_data['word_idx_in_sentence'],
+                'word_id': word_data['word_id'],
+                'word': word_data['word'],
+                'sentence_index': word_data['sentence_idx'],
+                'sentence_id': word_data['sentence_id'],
+                'sentence': word_data['sentence'],
+                'average_TRT': word_data.get('average_TRT', 0)
+            })
+    
+    df = pd.DataFrame(data)
+    df.to_csv(csv_path, index=False)
+
+
+def get_merged_words_dict_from_csv(csv_path, properties_dir=None):
+    """
+    Read the CSV file in word_sentence_fixations and return words_dict.
+    """
+    df = pd.read_csv(csv_path)
+    words_dict = {}
+
+    for _, row in df.iterrows():
+        stimulus = row['stimulus']
+        word_idx = row['word_index']
+        word_idx_in_sentence = row['word_index_in_sentence']
+        word_id = row['word_id']
+        # If word_idx_in_sentence is NaN, set it to -1 (the questions)
+        if pd.isna(word_idx_in_sentence):
+            word_idx_in_sentence = -1
+        word = row['word']
+        sentence_idx = row['sentence_index']
+        sentence_id = row['sentence_id']
+        sentence = row['sentence']
+        average_TRT = row['average_TRT']
+
+        if stimulus not in words_dict:
+            words_dict[stimulus] = {}
+        if word_idx not in words_dict[stimulus]:
+            words_dict[stimulus][word_idx] = {
+                'word': str(word),
+                'word_id': str(word_id),
+                'sentence': str(sentence),
+                'word_idx_in_sentence': int(word_idx_in_sentence),
+                'sentence_idx': int(sentence_idx),
+                'sentence_id': str(sentence_id),
+                'properties': WordProperties(word=str(word), sentence=str(sentence), word_idx_in_sentence=int(word_idx_in_sentence), properties_dir=properties_dir),
+                'average_TRT': float(average_TRT),
+            }
+
+    return words_dict

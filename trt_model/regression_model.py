@@ -14,13 +14,13 @@ class RegressionModel(nn.Module):
         self.relu = nn.ReLU()
         self.layer1 = nn.Linear(input_dim, 128)
         self.bn1 = nn.BatchNorm1d(128)
-        self.dropout1 = nn.Dropout(0.7)
+        self.dropout1 = nn.Dropout(0.5)
         self.layer2 = nn.Linear(128, 256)
         self.bn2 = nn.BatchNorm1d(256)
-        self.dropout2 = nn.Dropout(0.7)
+        self.dropout2 = nn.Dropout(0.5)
         self.layer3 = nn.Linear(256, 128)
         self.bn3 = nn.BatchNorm1d(128)
-        self.dropout3 = nn.Dropout(0.7)
+        self.dropout3 = nn.Dropout(0.5)
         self.output_layer = nn.Linear(128, 1)
     
     def forward(self, x):
@@ -56,7 +56,7 @@ def evaluate_regression_model(model, test_loader, criterion):
         pearson_test = pearsonr(test_true, test_pred)[0]
         spearman_test = spearmanr(test_true, test_pred)[0]
         r2_test = r2_score(test_true, test_pred)
-    return loss_test, r2_test, pearson_test, spearman_test
+    return loss_test, r2_test, pearson_test, spearman_test, test_pred
 
 
 def train_regression_model(model, train_loader, validation_loader, criterion, optimizer, scheduler, save_path='best_nn_model.pth', num_epochs=60):
@@ -71,10 +71,13 @@ def train_regression_model(model, train_loader, validation_loader, criterion, op
             loss.backward()
             optimizer.step()
 
-        if (epoch + 1) % 5 == 0:
-            print(f'Epoch {epoch + 1}, Loss: {loss.item()}')
+        if scheduler:
+            scheduler.step()
 
-        loss_dev, r2_dev, pearson_dev, spearman_dev = evaluate_regression_model(model, validation_loader, criterion)
+        if (epoch + 1) % 5 == 0:
+            print(f'Epoch {epoch + 1}, Loss: {loss.item()}, LR: {optimizer.param_groups[0]["lr"]}')
+
+        loss_dev, r2_dev, pearson_dev, spearman_dev, _ = evaluate_regression_model(model, validation_loader, criterion)
         if loss_dev < best_loss:
             best_loss = loss_dev
             torch.save(model.state_dict(), save_path)

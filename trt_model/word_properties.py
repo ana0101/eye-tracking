@@ -18,6 +18,7 @@ class WordProperties:
         self.word_idx_in_sentence = word_idx_in_sentence
         self.properties_dir = properties_dir
         self.length = -1
+        self.num_tokens = -1
         self.frequency = -1
         self.syllables = -1
         self.vowels = -1
@@ -35,6 +36,7 @@ class WordProperties:
         self.syntactic_relations = -1
         self.spacy_embedding = -1
         self.surprisal = -1
+        self.surprisal_huggingface = -1
         self.transformer_embedding_first_layer = -1
         self.transformer_embedding_middle_layer = -1
         self.transformer_embedding_last_layer = -1
@@ -44,6 +46,24 @@ class WordProperties:
     def compute_length(self):
         if self.length == -1:
             self.length = len(self.word)
+
+    def compute_num_tokens(self):
+        if self.properties_dir is not None:
+            if os.path.exists(self.properties_dir + '/properties.csv'):
+                print("Loading num_tokens from CSV file...")
+                df = pd.read_csv(self.properties_dir + '/properties.csv')
+                df = df[df['sentence'] == self.sentence]
+                df = df[df['word_index_in_sentence'] == self.word_idx_in_sentence]
+                # Check if exactly one row is returned
+                if len(df) == 1:
+                    self.num_tokens = float(df['num_tokens'].values[0])
+                    return
+                else:
+                    print(f"Expected one row for sentence '{self.sentence}' and word index {self.word_idx_in_sentence}, but got {len(df)} rows.")
+                    return
+        if self.num_tokens == -1:
+            tokenizer = AutoTokenizer.from_pretrained("dumitrescustefan/bert-base-romanian-cased-v1")
+            self.num_tokens = len(tokenizer.tokenize(self.word))
         
     def compute_frequency(self):
         if self.frequency == -1:
@@ -70,9 +90,9 @@ class WordProperties:
     def compute_surprisal(self):
         if self.properties_dir is not None:
             # Check if properties_dir contains surprisal.csv file
-            if os.path.exists(self.properties_dir + '/surprisal.csv'):
+            if os.path.exists(self.properties_dir + '/properties.csv'):
                 print("Loading surprisal from CSV file...")
-                df = pd.read_csv(self.properties_dir + '/surprisal.csv')
+                df = pd.read_csv(self.properties_dir + '/properties.csv')
                 df = df[df['sentence'] == self.sentence]
                 df = df[df['word_index_in_sentence'] == self.word_idx_in_sentence]
                 # Check if exactly one row is returned
@@ -117,14 +137,42 @@ class WordProperties:
             self.surprisal = -math.log2(word_prob)
 
 
+    def compute_surprisal_huggingface(self):
+        if self.properties_dir is not None:
+            # Check if properties_dir contains surprisal_huggingface.csv file
+            if os.path.exists(self.properties_dir + '/surprisal_huggingface.csv'):
+                print("Loading surprisal_huggingface from CSV file...")
+                df = pd.read_csv(self.properties_dir + '/surprisal_huggingface.csv')
+                df = df[df['sentence'] == self.sentence]
+                df = df[df['word_index_in_sentence'] == self.word_idx_in_sentence]
+                # Check if exactly one row is returned
+                if len(df) == 1:
+                    self.surprisal_huggingface = float(df['surprisal'].values[0])
+                    return
+                else:
+                    print(f"Expected one row for sentence '{self.sentence}' and word index {self.word_idx_in_sentence}, but got {len(df)} rows.")
+                    return
+
+        if self.surprisal_huggingface == -1:
+            model = AutoHuggingFaceModel.from_pretrained("dumitrescustefan/bert-base-romanian-cased-v1")
+            # Phrase is the word for which we want to compute the surprisal
+            phrase = self.word
+            preffix = self.sentence[:self.sentence.index(self.word)]
+            suffix = self.sentence[self.sentence.index(self.word) + len(self.word):]
+            surprisal = model.extract_surprisal(phrase, preffix, suffix)[0]
+            self.surprisal_huggingface = surprisal
+
+
     def compute_properties(self):
         self.compute_length()
+        self.compute_num_tokens()
         self.compute_frequency()
         self.compute_syllables()
         self.compute_vowels()
         self.compute_consonants()
         self.compute_vowel_ratio()
         self.compute_surprisal()
+        # self.compute_surprisal_huggingface()
 
 
 def transformer_embedding(word_ids, embeddings, offsets):
