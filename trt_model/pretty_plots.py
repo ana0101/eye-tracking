@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import numpy as np
+import pandas as pd
 
 def plot_sentence_heatmap(words_dict, sentence_id, cmap='coolwarm'):
     """
@@ -67,4 +68,22 @@ def plot_pred_and_true(words, true_trt, pred_trt, sentence_id=None):
     plt.title(title)
     plt.legend()
     plt.tight_layout()
+    plt.show()
+
+
+def barplot_accuracy(models, accuracies_non_embedding, accuracies_embedding, accuracies_all):
+    df = pd.DataFrame({
+        "Model": models,
+        "Non-embedding": accuracies_non_embedding,
+        "Embedding": accuracies_embedding,
+        "All": accuracies_all
+    }).set_index("Model")
+
+    ax = df.plot(kind="bar", figsize=(14, 6), colormap='Set2')
+    plt.title("Model Accuracy Comparison Across Feature Sets")
+    plt.ylabel("Accuracy (%)")
+    plt.xticks(rotation=45, ha='right')
+    plt.legend(title="Feature Set", bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
+    plt.tight_layout()
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.show()

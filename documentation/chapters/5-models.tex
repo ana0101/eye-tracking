@@ -79,19 +79,19 @@ I trained the models first on the non-embedding features, then on the embeddings
             Model & MSE & R2 & Pearson & Spearman & Accuracy \\
             \hline
             Linear Regression & 0.66 & 0.31 & 0.59 & 0.63 & 74.11 \\
-            Elastic Net & 0.68 & 0.28 & 0.54 & 0.63 & 67.11 \\
+            Elastic Net & 0.59 & 0.36 & 0.61 & 0.67 & 76.30 \\
             SGD Regressor & 0.73 & 0.23 & 0.57 & 0.61 & 72.69 \\
             Bayesian Ridge & 0.59 & 0.38 & 0.62 & 0.68 & 75.24 \\
             SVR Linear Kernel & 0.66 & 0.30 & 0.57 & 0.64 & 70.27 \\
             SVR RBF Kernel & 0.58 & 0.38 & 0.63 & 0.69 & 73.95 \\
-            K Neighbors Regressor & 0.87 & 0.08 & 0.53 & 0.62 & 87.40 \\
-            Random Forest Regressor & 0.68 & 0.28 & 0.53 & 0.61 & 75.66 \\
+            K Neighbors Regressor & 0.66 & 0.29 & 0.57 & 0.64 & 87.40 \\
+            Random Forest Regressor & 0.67 & 0.28 & 0.53 & 0.61 & 76.00 \\
             Gradient Boosting Regressor & 0.71 & 0.25 & 0.53 & 0.62 & 74.58 \\
             Hist Gradient Boosting Regressor & 0.63 & 0.33 & 0.58 & 0.65 & 73.99 \\
             Kernel Ridge Linear Kernel & 0.66 & 0.31 & 0.59 & 0.63 & 74.13 \\
             Kernel Ridge RBF Kernel & 0.55 & 0.42 & 0.65 & 0.69 & 78.21 \\
-            MLP Regressor & 0.72 & 0.24 & 0.56 & 0.59 & 86.29 \\
-            Custom Neural Network & 0.52 & 0.39 & 0.62 & 0.66 & 0.82 \\
+            MLP Regressor & 0.68 & 0.28 & 0.58 & 0.64 & 87.48 \\
+            Custom Neural Network & 0.52 & 0.39 & 0.62 & 0.66 & 82.32 \\
             \hline
         \end{tabular}
         \caption{Embedding features.}
@@ -105,7 +105,7 @@ I trained the models first on the non-embedding features, then on the embeddings
             Model & MSE & R2 & Pearson & Spearman & Accuracy \\
             \hline
             Linear Regression & 0.63 & 0.33 & 0.61 & 0.64 & 88.02 \\
-            Elastic Net & 0.57 & 0.39 & 0.63 & 0.69 & 92.99 \\
+            Elastic Net & 0.55 & 0.41 & 0.65 & 0.70 & 92.99 \\
             SGD Regressor & 0.68 & 0.29 & 0.58 & 0.60 & 85.97 \\
             Bayesian Ridge & 0.55 & 0.41 & 0.65 & 0.69 & 85.96 \\
             SVR (RBF Kernel) & 0.56 & 0.40 & 0.65 & 0.69 & 82.31 \\
@@ -131,14 +131,17 @@ I also fine-tuned a BERT model for the task of predicting the total reading time
 \subsection{Data Preparation}
 The first step was to prepare the data for fine-tuning the BERT model. Since BERT works with tokenized input, in order to use the context, I organized the data by sentences. I created a dictionary where the keys are the sentence ids and the values are the sentence text, the list of words in the sentence, and the total reading time for each word in the sentence, which I used to create a dataframe. I then split the data into train, validation, and test sets, with 80\% of the data used for training, 10\% for validation, and 10\% for testing, and standardized the total reading time. The train set contains 250 sentences, while the validation and test sets contain 25 sentences each. The sentences were selected randomly.
 
-Based on the dataframe, I created a dataset class built on the PyTorch Dataset class. The dataset class takes as input the dataframe, the tokenizer, and a maximum sequence length. It tokenizez the words in the sentences and creates the input tensors for the BERT model. The input tensors include the input ids, which are the tokenized words, the attention masks, which indicate which tokens are padding and which are not, and the targets, which are the total reading time for each word in the sentence. Because some words are split into multiple tokens, I used the word's reading time as the target for all tokens of the word.
+Based on the dataframe, I created a dataset class built on the PyTorch Dataset class. The dataset class takes as input the dataframe, the tokenizer, and a maximum sequence length. It tokenizez the words in the sentences and creates the input tensors for the BERT model. It shortens the sentences to the maximum sequence length, and pads them if they are shorter than the maximum sequence length. The input tensors include the input ids, which are the tokenized words, the attention masks, which indicate which tokens are padding and which are not, and the targets, which are the total reading time for each word in the sentence. Because some words are split into multiple tokens, I used the word's reading time as the target for all tokens of the word.
 
 \subsection{Model Architecture}
-The first model I tried was BertForTokenClassification, using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model, which I modified for a regression task. BertForTokenClassification is a BERT model with a linear layer on top that outputs the probabilities for each class. In this case, I used the logits from the output, which are the raw scores for each token before being passed through a softmax function, and set the number of output classes to 1, since I want to predict a single value (the total reading time) for each token. The model is trained using the mean squared error loss function.
+The first model I tried was BertForTokenClassification, using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model, which I modified for a regression task. BertForTokenClassification is a BERT model with a linear layer on top that outputs the probabilities for each class. In this case, I used the logits from the output, which are the raw scores for each token before being passed through a softmax function, and set the number of output classes to 1, since I want to predict a single value (the total reading time) for each token. 
 
-The second model I tried was a normal BERT model, also using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model. On top of the BERT model, I added a regression head, which contains a linear layer, followed by ReLU activation and dropout, then another linear layer that outputs a single value (the total reading time). The model is trained using the mean squared error loss function.
+The second model I tried was a normal BERT model, also using the pretrained \textit{dumitrescustefan/bert-base-romanian-uncased-v1} model. On top of the BERT model, I added a regression head, which contains a linear layer, followed by ReLU activation, layer normalization and dropout, then another linear layer that outputs a single value (the total reading time). 
 
 \subsection{Training}
+I tried several different training strategies for the BERT models. The strategy that worked best was based on gradual unfreezing. I trained the first model for a total of 30 epochs, unfreezing 2 layers every 5 epochs. The strategy for the second model was the same as the first, except that I first trained only the regression head for 5 epochs, then I gradually unfreezed the BERT layers, unfreezing 2 layers every 5 epochs, for a total of 35 epochs. I used the AdamW optimizer with a learning rate of 1e-4, a weight decay of 1e-4, and a cosine scheduler with warmup with 10 warmup steps. The batch size was set to 8. The dropout rate for the first model was set to 0.3, while for the second model it was set to 0.2. 
+
+The loss function used for training was the mean squared error, which I customized to ignore the padding tokens in the input. For getting the word-level predictions, I averaged the predictions for each word based on the tokens that make up the word, so that the final prediction for each word is the average of the predictions for the tokens. The evaluation metrics were calculated on the word-level predictions.
 
 \subsection{Results}
 The results of the BERT fine-tuning models are shown in Table \ref{tab:bert_finetuning_results}.
@@ -149,8 +152,8 @@ The results of the BERT fine-tuning models are shown in Table \ref{tab:bert_fine
         \hline
         Model & MSE & R2 & Pearson & Spearman & Accuracy \\
         \hline
-        BertForTokenClassification & 1.09 & 0.40 & 0.65 & 0.68 & 85.10 \\
-        BERT with Regression Head & 1.12 & 0.39 & 0.65 & 0.68 & 83.30 \\
+        BertForTokenClassification & 1.06 & 0.43 & 0.66 & 0.66 & 85.53 \\
+        Bert with Regression Head & 1.06 & 0.42 & 0.64 & 0.68 & 88.47 \\
         \hline
     \end{tabular}
     \caption{Results of BERT fine-tuning models.}
