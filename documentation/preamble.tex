@@ -22,3 +22,12 @@
 \usepackage{subcaption}
 \addbibresource{bibliography.bib}
 \setlength{\parindent}{1.5em}
+\usepackage{titlesec}
+
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@makechapterhead}{\cleardoublepage}{}{}{}
+\patchcmd{\@makechapterhead}{\clearpage}{}{}{}
+\patchcmd{\@makeschapterhead}{\cleardoublepage}{}{}{}
+\patchcmd{\@makeschapterhead}{\clearpage}{}{}{}
+\makeatother

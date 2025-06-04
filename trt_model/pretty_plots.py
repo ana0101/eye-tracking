@@ -71,17 +71,17 @@ def plot_pred_and_true(words, true_trt, pred_trt, sentence_id=None):
     plt.show()
 
 
-def barplot_accuracy(models, accuracies_non_embedding, accuracies_embedding, accuracies_all):
+def barplot_metric(models, metrics_non_embedding, metrics_embedding, metrics_all, metric_name, title, xlabel):
     df = pd.DataFrame({
-        "Model": models,
-        "Non-embedding": accuracies_non_embedding,
-        "Embedding": accuracies_embedding,
-        "All": accuracies_all
-    }).set_index("Model")
+        xlabel: models,
+        "Scalar": metrics_non_embedding,
+        "Embedding": metrics_embedding,
+        "All": metrics_all
+    }).set_index(xlabel)
 
     ax = df.plot(kind="bar", figsize=(14, 6), colormap='Set2')
-    plt.title("Model Accuracy Comparison Across Feature Sets")
-    plt.ylabel("Accuracy (%)")
+    plt.title(title)
+    plt.ylabel(f"{metric_name}")
     plt.xticks(rotation=45, ha='right')
     plt.legend(title="Feature Set", bbox_to_anchor=(1.02, 1), loc='upper left', borderaxespad=0)
     plt.tight_layout()

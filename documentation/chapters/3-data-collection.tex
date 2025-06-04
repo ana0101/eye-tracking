@@ -22,7 +22,7 @@ After translating the stimuli, in order to run the experiment, images with the t
 \section{Running the Experiment}
 In order to run the experiment, the MultiplEYE project provides a software package \textit{MultiplEYE Experiment Implementation} \cite{MultiplEYE_ExperimentImplementation2025}. 
 
-An eye-tracking device is required to run the experiment. The University of Bucharest has an EyeLink 1000 Plus eye-tracker at the Faculty of Psychology and Educational Sciences, which I used to run the experiment. The eye-tracker is connected to a computer that runs the MultiplEYE Experiment Implementation software. The participant sits in front of the eye-tracker and reads the texts displayed on the monitor. The eye-tracker records their eye movements while they read.
+An eye-tracking device is required to run the experiment. The University of Bucharest has an EyeLink 1000 Plus eye-tracker at the Faculty of Psychology and Educational Sciences, which I used to run the experiment. In order to properly utilize the eye-tracker, I familiarized myself with the device using the documentation provided by the manufacturer \cite{EyeLink1000PlusUserManual}. The eye-tracker is connected to a computer that runs the MultiplEYE Experiment Implementation software. The participant sits in front of the eye-tracker and reads the texts displayed on the monitor. The eye-tracker records their eye movements while they read.
 
 The experiment was run with 4 participants, all of them native Romanian speakers. The experiment took about 1-2 hours for each participant to complete. All participants were volunteers and were informed about the purpose of the experiment and how their data would be used. 
 
@@ -42,3 +42,19 @@ This regex splits the text into sentences by matching the following patterns:
     \item A newline character followed by zero or more whitespace characters.
     \item A period followed by a closing quotation mark.
 \end{itemize}
+
+\section{TRT Data}
+Before extracting features or training models, I looked at the data collected from the experiment. The data consists of the total reading time (TRT) for each word in the text, which is the sum of the reading times for all fixations on that word. The TRT is calculated by summing the durations of all fixations on a word, which gives an indication of how long the participant spent reading that word.
+
+The TRT data for each participant is stored in a CSV file with columns for the participant ID, the text ID, the word ID, the word itself, the sentence ID, the sentence itself, the word index in the sentence, and the TRT for that word. The TRT is measured in milliseconds. I averaged the TRT across all participants for each word in the text, which gives a more reliable estimate of the reading time for each word. 
+
+However, there are some differences between the stimuli of each of the participants. The first two participants had slightly differently translated texts, while the last two participants read the final version of the texts. I used the final version of the texts and simply excluded metrics from the first two participants for sentences that were not identical to the final version. Another important difference is that during the experiment with the first participant, the eye-tracking computer malfunctioned and shut down, which resulted in a stimuli, 10 - Arg\_PISACowsMilk, not being read at all. Luckily, the data for the other texts was still collected, so I could use that data for the analysis.
+
+The figure \ref{fig:trt_data} shows a histogram of the TRT data, which gives an overview of the distribution of reading times across the dataset. As is visible in the histogram, a lot of words have a total reading time of 0 milliseconds, which means that the participant did not fixate on those words at all. This is expected, as some words in the text may be skipped or read very quickly without any fixations. The histogram also shows that there are some words with very high TRT values, which indicates that those words were read more carefully or were more difficult to process.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/TRT_histogram_KDE.png}
+    \caption{Histogram of Total Reading Time}
+    \label{fig:trt_data}
+\end{figure}

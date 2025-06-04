@@ -1,5 +1,13 @@
 \documentclass[12pt, a4paper]{report}
 
+\usepackage{etoolbox}
+
+\makeatletter
+\patchcmd{\chapter}
+  {\if@openright\cleardoublepage\else\clearpage\fi}
+  {}{}{}                                           
+\makeatother
+
 \input{preamble}
 
 \begin{document}
@@ -16,28 +24,20 @@
 \tableofcontents
 
 \cleardoublepage
-\include{chapters/1-introduction}
 
-\cleardoublepage
-\include{chapters/2-eye-tracking}
+\input{chapters/1-introduction}
 
-\cleardoublepage
-\include{chapters/3-data-collection}
+\input{chapters/2-preliminaries}
 
-\cleardoublepage
-\include{chapters/4-data-features}
+\input{chapters/3-data-collection}
 
-\cleardoublepage
-\include{chapters/5-models}
+\input{chapters/4-models}
 
-\cleardoublepage
-\include{chapters/6-lexical-simplification}
+\input{chapters/5-lexical-simplification}
 
-\cleardoublepage
-\include{chapters/7-interface}
+\input{chapters/6-interface}
 
-\cleardoublepage
-\include{chapters/8-conclusion}
+\input{chapters/7-conclusion}
 
 \printbibliography[heading=bibintoc]
 

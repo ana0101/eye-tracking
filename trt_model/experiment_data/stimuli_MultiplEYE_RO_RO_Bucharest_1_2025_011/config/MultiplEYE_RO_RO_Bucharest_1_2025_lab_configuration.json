@@ -1,0 +1,31 @@
+{
+  "Data_collection_name": "MultiplEYE_RO_RO_Bucharest_1_2025",
+  "Preregistration_core_or_additional_data_collection": "Pre-registration for core dataset",
+  "Name_eye-tracker": "EyeLink 1000 Plus",
+  "Name_eye-tracker_manufacturer": "SR Research Ltd.",
+  "Maximal_frequency": 2000,
+  "Specification_camera_system": "Desktop mount",
+  "Name_computer_operation_system": "Windows",
+  "Name_monitor": ["T24i-2L", "Lenovo ThinkVision"],
+  "Monitor_resolution_in_px": "[1920, 1080]",
+  "Screen_size_in_cm": "[53, 30]",
+  "Distance_in_cm": "60",
+  "Script_direction": "LTR",
+  "Language_code": "RO",
+  "Country_code": "RO",
+  "Lab_number": "1",
+  "City": "Bucharest",
+  "Estimated_end_year_of_data_collection": "2026",
+  "Use_of_multiple_devices": "No",
+  "Stimuli_preparation": {
+    "Stimuli will be or have been prepared by our own lab": "Yes"
+  },
+  "Psychometric_tests": {
+    "Are_tests_conducted": "Yes",
+    "PLAB": "Metalinguistic aptitude: PLAB",
+    "Flanker": "Cognitive control: Flanker task",
+    "Stroop": "Cognitive control: Stroop task",
+    "RAN": "Rapid automatized naming: RAN task",
+    "WikiVocab": "Vocabulary test: WikiVocab"
+  }
+}
